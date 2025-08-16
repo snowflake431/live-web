@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Google Sheet Live Data</title>
+</head>
+<body>
+  <h1>GOOGLE SHEET LIVE DATA</h1>
+  <div id="data"></div>
+
+  <script>
+    // Replace with your published sheet's "CSV link"
+    const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSIzMrNgavVFbWzenl-XnkLvlwb6qkw_wihJo4rRd-UAS5B7W6O15fDWt50BL5GmTs3HCk6RpkHSs1S/pub?output=csv";
+
+    fetch(sheetURL)
+      .then(response => response.text())
+      .then(csv => {
+        let rows = csv.split("\n").map(r => r.split(","));
+        let html = "<table border='1' cellpadding='5'>";
+        rows.forEach(r => {
+          html += "<tr>";
+          r.forEach(c => html += `<td>${c}</td>`);
+          html += "</tr>";
+        });
+        html += "</table>";
+        document.getElementById("data").innerHTML = html;
+      })
+      .catch(err => console.error("Error loading sheet:", err));
+  </script>
+</body>
+</html>
